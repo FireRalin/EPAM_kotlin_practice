@@ -7,18 +7,18 @@
     tools:context="com.etu.epam_practice.MainActivity">
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/previosButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton3"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton3"
+        app:layout_constraintBottom_toBottomOf="@+id/stopStarButton"
+        app:layout_constraintEnd_toStartOf="@+id/stopStarButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageButton3"
+        app:layout_constraintTop_toTopOf="@+id/stopStarButton"
         app:srcCompat="@android:drawable/ic_media_previous" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/stopStarButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,13 +29,13 @@
         app:srcCompat="@android:drawable/ic_media_play" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="48dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton3"
+        app:layout_constraintBottom_toBottomOf="@+id/stopStarButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton3"
-        app:layout_constraintTop_toTopOf="@+id/imageButton3"
+        app:layout_constraintStart_toEndOf="@+id/stopStarButton"
+        app:layout_constraintTop_toTopOf="@+id/stopStarButton"
         app:srcCompat="@android:drawable/ic_media_next" />
 </androidx.constraintlayout.widget.ConstraintLayout>

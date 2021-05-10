@@ -1,13 +1,14 @@
 package com.etu.epam_practice
 
+import android.R.raw
 import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.widget.SeekBar
+import androidx.appcompat.app.AppCompatActivity
 import com.etu.epam_practice.databinding.ActivityMainBinding
-
-
+import java.lang.reflect.Field
+import android.util.Log
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,20 +17,77 @@ class MainActivity : AppCompatActivity() {
     private var handler = Handler()
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        val mediaplayer = MediaPlayer.create(this,R.raw.morg)
+        var currentSong = 0
+
+        val fields: Array<Field> = R.raw::class.java.getFields()
+        var songsList: MutableList<Pair<Int, String>> = mutableListOf()
+        fields.forEach {field ->
+            Log.d("Knames", String.format(
+                "name=\"%s\", id=0x%08x",
+                field.name, field.getInt(field))
+            )
+            songsList.add(field.getInt(field) to field.name)
+        }
+
+        val drawables: Array<Field> = R.drawable::class.java.getFields()
+        var coversList: MutableList<Pair<Int, String>> = mutableListOf()
+        drawables.forEach {field ->
+            Log.d("COVER names", String.format(
+                "name=\"%s\", id=0x%08x",
+                field.name, field.getInt(field))
+            )
+            if (field.name.endsWith("_cover")) {
+                coversList.add(field.getInt(field) to field.name)
+            }
+        }
+        var mediaplayer = MediaPlayer.create(this,songsList[currentSong].first)
+
+        fun changeSong(info: Pair<Int, String>, isPlaying: Boolean = false){
+            mediaplayer = MediaPlayer.create(this, info.first)
+
+            binding.seekbar.progress = 0
+            binding.seekbar.max = mediaplayer.duration
+            binding.textView.text = info.second
+            binding.imageView.setImageResource(coversList[currentSong].first)
+
+            mediaplayer.setOnCompletionListener {
+                if (currentSong < songsList.size - 1){
+                    changeSong(songsList[++currentSong], true)
+                }
+                else{
+                    binding.stopStarButton.setImageResource(R.drawable.ic_baseline_play_arrow_40)
+                    binding.seekbar.progress = 0
+                }
+
+            }
+            if (isPlaying)
+                mediaplayer.start()
+        }
 
         binding.seekbar.progress = 0
         binding.seekbar.max = mediaplayer.duration
+        binding.textView.text = songsList[currentSong].second
+        binding.imageView.setImageResource(coversList[currentSong].first)
+
+        mediaplayer.setOnCompletionListener {
+            if (currentSong < songsList.size - 1){
+                changeSong(songsList[++currentSong], true)
+            }
+            else{
+                binding.stopStarButton.setImageResource(R.drawable.ic_baseline_play_arrow_40)
+                binding.seekbar.progress = 0
+            }
+        }
 
 
 
         binding.stopStarButton.setOnClickListener{
-            val temp = null
             if (!mediaplayer.isPlaying){
                 mediaplayer.start()
                 binding.stopStarButton.setImageResource(R.drawable.ic_baseline_pause_40)
@@ -40,11 +98,28 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.previosButton.setOnClickListener{
-            val temp = null
+            if (currentSong > 0){
+                currentSong--
+                if (!mediaplayer.isPlaying){
+                    changeSong(songsList[currentSong], false)
+                }else{
+                    mediaplayer.pause()
+                    changeSong(songsList[currentSong], true)
+                }
+            }
+
         }
 
         binding.nextButton.setOnClickListener{
-            val temp = null
+            if (currentSong < songsList.size-1){
+                currentSong++
+                if (!mediaplayer.isPlaying){
+                    changeSong(songsList[currentSong], false)
+                }else{
+                    mediaplayer.pause()
+                    changeSong(songsList[currentSong], true)
+                }
+            }
         }
 
         binding.seekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
@@ -85,13 +160,6 @@ class MainActivity : AppCompatActivity() {
         }
         handler.postDelayed(runnable, 1000)
 
-
-
-
-        mediaplayer.setOnCompletionListener {
-            binding.stopStarButton.setImageResource(R.drawable.ic_baseline_play_arrow_40)
-            binding.seekbar.progress = 0
-        }
 
 
 

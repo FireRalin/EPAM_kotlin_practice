@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.5edPocketHelper">
+        android:theme="@style/Theme.audioPlayer">
         <activity android:name="com.etu.epam_practice.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

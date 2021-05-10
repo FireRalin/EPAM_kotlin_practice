@@ -63,11 +63,30 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        fun createTimeLabel(time: Int): String{
+            var timeLabel = ""
+            var min = time/1000/60
+            var sec = time/1000%60
+
+            timeLabel = "$min:"
+            if(sec<10) timeLabel += "0"
+            timeLabel += sec
+
+            return timeLabel
+        }
+
         runnable = Runnable {
             binding.seekbar.progress = mediaplayer.currentPosition
             handler.postDelayed(runnable, 1000)
+            var elapsedTime = createTimeLabel(mediaplayer.currentPosition)
+            binding.elapsedTimeLabel.text = elapsedTime
+            var remainingTime = createTimeLabel(mediaplayer.duration - mediaplayer.currentPosition)
+            binding.remainingTimeLabel.text = "-$remainingTime"
         }
         handler.postDelayed(runnable, 1000)
+
+
+
 
         mediaplayer.setOnCompletionListener {
             binding.stopStarButton.setImageResource(R.drawable.ic_baseline_play_arrow_40)

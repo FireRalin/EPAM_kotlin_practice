@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#525252"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.etu.epam_practice.MainActivity">
@@ -68,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:text="BEST SONG"
+        android:textColor="#000000"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
